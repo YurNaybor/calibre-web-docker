@@ -1,0 +1,20 @@
+---
+version: '2.4'
+services:
+  calibre-web:
+    image: ghcr.io/linuxserver/calibre-web:${CALIBRE_WEB_VERSION}
+    container_name: calibre-web
+    # The lsio image cannot run as non-root, but provides itself a mechanism to drop privileges (see PUID / PGID in env)
+    #user: ${CALIBRE_WEB_UID}:${CALIBRE_WEB_GID}
+    environment:
+      PUID: ${CALIBRE_WEB_UID}
+      PGID: ${CALIBRE_WEB_GID}
+    restart: unless-stopped
+    ports:
+      - "8083:8083"
+    volumes:
+      - config:/config
+      - ${CALIBRE_WEB_BOOKS_DIR}:/books
+volumes:
+  config:
+...
